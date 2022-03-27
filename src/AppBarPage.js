@@ -15,8 +15,8 @@ export default function AppBarPage({ numOfSelectedPrizes, children }) {
           )}
           {children}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ברוכים הבאים למכירת החסד של סמינר וולף
-            <p style={{ margin: "0px" }}>מפעל הבית</p>
+            ברוכים הבאים למכירה הסינית   
+            <p style={{ margin: "0px" }}>בבבום</p>
           </Typography>
         </Toolbar>
       </AppBar>
