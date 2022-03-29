@@ -2,38 +2,35 @@ import React from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 
-export default function ThankYouModal(props) {
+export default function ThankFYouModal(props) {
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
+  
   const updateFirstName = (event) => {
     setFirstName(event.target.value);
   };
+
   const updateLastName = (event) => {
     setLastName(event.target.value);
   };
-  const onCloseModal = () => {
-    localStorage.setItem(
-      "users",
-      JSON.stringify([
-        ...JSON.parse(localStorage.getItem("users") || "[]"),
-        {
-          firstName: firstName,
-          lastName: lastName,
-          prizesList: props.prizesArray
-            .filter(({ isSelected }) => isSelected)
-            .map(({ name }) => name),
-        },
-      ])
-    );
-    props.setShouldShowThankYouModal(false);
+
+  const addNewUser = () => {
+    let newUser = { user_first_name: firstName, user_last_name: lastName, arr_orders: [] }
+    fetchUser(newUser);
+  };
+
+  const fetchUser = async (user) => {
+    await fetch('http://localhost:4500/user', { method: 'POST', body: JSON.stringify(user), headers: { 'Content-Type': 'application/json' } })
+      .then(response => { console.log(response) })
+      .catch(error => { console.log(error) });
+      props.setShouldShowThankYouModal(false);
   };
 
   return (
     <Modal
       open
-      onClose={onCloseModal}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
       sx={{
@@ -53,16 +50,17 @@ export default function ThankYouModal(props) {
         }}
       >
         <Typography id="modal-modal-title" variant="h6" component="h2">
-          תזכו למצוות!
+          תודה רבה!
         </Typography>
         <Typography id="server-modal-description" sx={{ pt: 2 }}>
-          יישר כוח על השתתפותכם בהחזקת מפעל הבית של סמינר וולף
+          שמחים אתך בהשתתפותך בהגרלה הסינית!
         </Typography>
         <Typography>
           על מנת לשמור את נתוניך לצורך עריכת ההגרלות, נא הזן את הפרטים הבאים
         </Typography>
         <TextField label="שם פרטי" onChange={updateFirstName} />
         <TextField label="שם משפחה" onChange={updateLastName} />
+        <Button onClick={addNewUser}>לאישור</Button>
       </Box>
     </Modal>
   );
